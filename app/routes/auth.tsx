@@ -16,7 +16,6 @@ const Auth = () => {
     const navigate = useNavigate()
 
     useEffect(() => {
-        console.log('isLoading:', isLoading)
         if(auth.isAuthenticated) navigate(next);
     }, [auth.isAuthenticated, next])
 
