@@ -1,5 +1,5 @@
 import Navbar from "~/components/Navbar"
-import { useState, type FormEvent } from "react"
+import { useEffect, useState, type FormEvent } from "react"
 import FileUploader from "~/components/FileUploader"
 import { usePuterStore } from "~/lib/puter"
 import { useNavigate } from "react-router"
@@ -8,11 +8,15 @@ import { generateUUID } from "~/lib/utils"
 import { prepareInstructions } from "constants"
 
 const Upload = () => {
-    const { fs, ai, kv } = usePuterStore()
+    const { auth, fs, ai, kv } = usePuterStore()
     const navigate = useNavigate()
     const [isProcessing, setIsProcessing] = useState(false)
     const [statusText, setStatusText] = useState("")
     const [file, setFile] = useState<File | null>(null)
+
+    useEffect(() => {
+        if (!auth.isAuthenticated) navigate("/auth?next=/upload")
+    }, [auth.isAuthenticated])
 
     const handleFileSelect = (file: File | null) => {
         setFile(file)
@@ -33,17 +37,21 @@ const Upload = () => {
         setStatusText("Téléchargement du fichier en cours...")
 
         const uploadedFile = await fs.upload([file])
-        if (!uploadedFile) return setStatusText("Échec du téléchargement du fichier.")
+        if (!uploadedFile)
+            return setStatusText("Échec du téléchargement du fichier.")
 
         setStatusText("Conversion en image...")
         const imageFile = await convertPdfToImage(file)
         console.log("Converted image file:", imageFile)
         if (!imageFile.file)
-            return setStatusText("Erreur : Échec de la conversion du PDF en image.")
+            return setStatusText(
+                "Erreur : Échec de la conversion du PDF en image."
+            )
 
         setStatusText("Téléchargement de l'image en cours...")
         const uploadedImage = await fs.upload([imageFile.file])
-        if (!uploadedImage) return setStatusText("Échec du téléchargement de l'image.")
+        if (!uploadedImage)
+            return setStatusText("Échec du téléchargement de l'image.")
 
         setStatusText("Préparation des données...")
 
@@ -100,7 +108,10 @@ const Upload = () => {
             <Navbar />
             <section className="main-section">
                 <div className="page-heading py-16">
-                    <h1>Des retours personnalisés et intelligents pour votre job de rêve</h1>
+                    <h1>
+                        Des retours personnalisés et intelligents pour votre job
+                        de rêve
+                    </h1>
                     {isProcessing ? (
                         <>
                             <h2>{statusText}</h2>
@@ -112,7 +123,8 @@ const Upload = () => {
                         </>
                     ) : (
                         <h2>
-                            Déposez votre CV pour obtenir un score ATS et des conseils d'amélioration
+                            Déposez votre CV pour obtenir un score ATS et des
+                            conseils d'amélioration
                         </h2>
                     )}
                     {!isProcessing && (
@@ -153,7 +165,9 @@ const Upload = () => {
                                 />
                             </div>
                             <div className="form-div">
-                                <label htmlFor="uploader">Télécharger un CV</label>
+                                <label htmlFor="uploader">
+                                    Télécharger un CV
+                                </label>
                                 <FileUploader onFileSelect={handleFileSelect} />
                             </div>
                             <button className="primary-button" type="submit">
