@@ -8,7 +8,7 @@ import { Link, useNavigate } from "react-router"
 export function meta({}: Route.MetaArgs) {
     return [
         { title: "Resumind" },
-        { name: "description", content: "Smart feedback for your dream job!" },
+        { name: "description", content: "Des retours personnalisés et intelligents pour votre job de rêve!" },
     ]
 }
 
@@ -44,16 +44,16 @@ export default function Home() {
             <Navbar />
             <section className="main-section">
                 <div className="page-heading py-16">
-                    <h1>Track Your Applications & Resume Ratings</h1>
+                    <h1>Suivez vos candidatures et les évaluations de CV</h1>
                     {!loadingResumes && resumes?.length === 0 ? (
                         <h2>
-                            No resumes found. Upload your first resume to get
-                            feedback
+                            Aucun CV trouvé. Téléchargez votre premier CV pour obtenir
+                            des retours.
                         </h2>
                     ) : (
                         <h2>
-                            Review your submissions and check AI-powered
-                            feedback
+                            Consultez vos soumissions et vérifiez les retours
+                            alimentés par l'IA
                         </h2>
                     )}
                 </div>
@@ -79,7 +79,7 @@ export default function Home() {
                 {!loadingResumes && resumes?.length === 0 && (
                     <div className="flex flex-col items-center justify-center mt-10 gap-4">
                         <Link to="/upload" className="primary-button w-fit text-xl font-semibold">
-                            Upload Resume
+                            Télécharger un CV
                         </Link>
                     </div>
                 )}

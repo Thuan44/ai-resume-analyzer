@@ -24,13 +24,13 @@ const Auth = () => {
             <div className="gradient-border shadow-lg">
                 <section className="flex flex-col gap-8 bg-white rounded-2xl p-10">
                     <div className="flex flex-col items-center gap-2 text-center">
-                        <h1>Welcome</h1>
-                        <h2>Log In to continue your journey</h2>
+                        <h1>Bienvenue</h1>
+                        <h2>Connectez-vous pour continuer votre parcours</h2>
                     </div>
                     <div>
                         {isLoading ? (
                             <button className="auth-button animate-pulse">
-                                <p>Signing you in...</p>
+                                <p>Connexion en cours...</p>
                             </button>
                         ) : (
                             <>
@@ -39,14 +39,14 @@ const Auth = () => {
                                         className="auth-button"
                                         onClick={auth.signOut}
                                     >
-                                        Log out
+                                        Se déconnecter
                                     </button>
                                 ) : (
                                     <button
                                         className="auth-button"
                                         onClick={auth.signIn}
                                     >
-                                        Log in
+                                        Se connecter
                                     </button>
                                 )}
                             </>

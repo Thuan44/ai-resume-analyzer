@@ -65,7 +65,7 @@ const Resume = () => {
                         className="w-2.5 h-2.5"
                     />
                     <span className="text-gray-800 text-sm font-semibold">
-                        Back to Homepage
+                        Retour à l'accueil
                     </span>
                 </Link>
             </nav>
@@ -86,7 +86,7 @@ const Resume = () => {
                 </section>
                 <section className="feedback-section">
                     <h2 className="text-4xl !text-black font-bold">
-                        Resume Review
+                        Revue du CV
                     </h2>
                     {feedback ? (
                         <div className="flex flex-col gap-8 animate-in fade-in duration-1000">

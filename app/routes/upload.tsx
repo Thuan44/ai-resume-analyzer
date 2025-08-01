@@ -8,7 +8,7 @@ import { generateUUID } from "~/lib/utils"
 import { prepareInstructions } from "constants"
 
 const Upload = () => {
-    const { auth, isLoading, fs, ai, kv } = usePuterStore()
+    const { fs, ai, kv } = usePuterStore()
     const navigate = useNavigate()
     const [isProcessing, setIsProcessing] = useState(false)
     const [statusText, setStatusText] = useState("")
@@ -30,22 +30,22 @@ const Upload = () => {
         file: File
     }) => {
         setIsProcessing(true)
-        setStatusText("Uploading the file...")
+        setStatusText("Téléchargement du fichier en cours...")
 
         const uploadedFile = await fs.upload([file])
-        if (!uploadedFile) return setStatusText("Failed to upload the file.")
+        if (!uploadedFile) return setStatusText("Échec du téléchargement du fichier.")
 
-        setStatusText("Converting to image...")
+        setStatusText("Conversion en image...")
         const imageFile = await convertPdfToImage(file)
         console.log("Converted image file:", imageFile)
         if (!imageFile.file)
-            return setStatusText("Error: Failed to convert PDF to image.")
+            return setStatusText("Erreur : Échec de la conversion du PDF en image.")
 
-        setStatusText("Uploading the image...")
+        setStatusText("Téléchargement de l'image en cours...")
         const uploadedImage = await fs.upload([imageFile.file])
-        if (!uploadedImage) return setStatusText("Failed to upload the image.")
+        if (!uploadedImage) return setStatusText("Échec du téléchargement de l'image.")
 
-        setStatusText("Preparing data...")
+        setStatusText("Préparation des données...")
 
         const uuid = generateUUID()
         const data = {
@@ -59,14 +59,14 @@ const Upload = () => {
         }
         await kv.set(`resume:${uuid}`, JSON.stringify(data))
 
-        setStatusText("Analyzing...")
+        setStatusText("Analyse en cours...")
 
         const feedback = await ai.feedback(
             uploadedFile.path,
             prepareInstructions({ jobTitle, jobDescription })
         )
         if (!feedback)
-            return setStatusText("Error: Failed to analyze the resume.")
+            return setStatusText("Erreur : Échec de l'analyse du CV.")
 
         const feedbackText =
             typeof feedback.message.content === "string"
@@ -75,8 +75,8 @@ const Upload = () => {
 
         data.feedback = JSON.parse(feedbackText)
         await kv.set(`resume:${uuid}`, JSON.stringify(data))
-        setStatusText("Analysis complete! Redirecting...")
-       
+        setStatusText("Analyse terminée ! Redirection...")
+
         navigate(`/resume/${uuid}`)
     }
 
@@ -100,7 +100,7 @@ const Upload = () => {
             <Navbar />
             <section className="main-section">
                 <div className="page-heading py-16">
-                    <h1>Smart feedback for your dream job</h1>
+                    <h1>Des retours personnalisés et intelligents pour votre job de rêve</h1>
                     {isProcessing ? (
                         <>
                             <h2>{statusText}</h2>
@@ -112,8 +112,7 @@ const Upload = () => {
                         </>
                     ) : (
                         <h2>
-                            Drop your resume for an ATS score and improvement
-                            tips
+                            Déposez votre CV pour obtenir un score ATS et des conseils d'amélioration
                         </h2>
                     )}
                     {!isProcessing && (
@@ -124,41 +123,41 @@ const Upload = () => {
                         >
                             <div className="form-div">
                                 <label htmlFor="company-name">
-                                    Company Name
+                                    Nom de l'entreprise
                                 </label>
                                 <input
                                     type="text"
                                     id="company-name"
                                     name="company-name"
-                                    placeholder="Company Name"
+                                    placeholder="Nom de l'entreprise"
                                 />
                             </div>
                             <div className="form-div">
-                                <label htmlFor="job-title">Job Title</label>
+                                <label htmlFor="job-title">Nom du poste</label>
                                 <input
                                     type="text"
                                     id="job-title"
                                     name="job-title"
-                                    placeholder="Job Title"
+                                    placeholder="Nom du poste"
                                 />
                             </div>
                             <div className="form-div">
                                 <label htmlFor="job-description">
-                                    Job Description
+                                    Description du poste
                                 </label>
                                 <textarea
                                     id="job-description"
                                     name="job-description"
-                                    placeholder="Job Description"
+                                    placeholder="Description du poste"
                                     rows={5}
                                 />
                             </div>
                             <div className="form-div">
-                                <label htmlFor="uploader">Upload Resume</label>
+                                <label htmlFor="uploader">Télécharger un CV</label>
                                 <FileUploader onFileSelect={handleFileSelect} />
                             </div>
                             <button className="primary-button" type="submit">
-                                Analyze resume
+                                Analyser le CV
                             </button>
                         </form>
                     )}

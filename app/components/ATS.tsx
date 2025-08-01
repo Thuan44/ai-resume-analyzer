@@ -30,15 +30,15 @@ const ATS = ({
           alt="ATS"
           className="w-10 h-10"
         />
-        <p className="text-2xl font-semibold">ATS Score - {score}/100</p>
+        <p className="text-2xl font-semibold">Score ATS - {score}/100</p>
       </div>
       <div className="flex flex-col gap-2">
         <p className="font-medium text-xl">
-          How well does your resume pass through Applicant Tracking Systems?
+          Quelle est l’efficacité de votre CV face aux systèmes de suivi des candidatures ?
         </p>
         <p className="text-lg text-gray-500">
-          Your resume was scanned like an employer would. Here's how it
-          performed:
+          Votre CV a été analysé comme le ferait un employeur. Voici comment il
+          a performé:
         </p>
         {suggestions.map((suggestion, index) => (
           <div className="flex flex-row gap-2 items-center" key={index}>
@@ -55,8 +55,8 @@ const ATS = ({
           </div>
         ))}
         <p className="text-lg text-gray-500">
-          Want a better score? Improve your resume by applying the suggestions
-          listed below.
+          Vous voulez un meilleur score? Améliorez votre CV en appliquant les
+          suggestions énumérées ci-dessous.
         </p>
       </div>
     </div>
