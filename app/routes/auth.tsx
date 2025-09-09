@@ -27,7 +27,7 @@ const Auth = () => {
                         <h1>Bienvenue</h1>
                         <h2>Connectez-vous pour continuer votre parcours</h2>
                     </div>
-                    <div>
+                    <div className="flex justify-center">
                         {isLoading ? (
                             <button className="auth-button animate-pulse">
                                 <p>Connexion en cours...</p>
